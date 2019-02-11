@@ -3,6 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
+const redis = require('./helpers/redis.js');
+
+
 const PORT = process.env.PORT || 3000;
 
 
@@ -24,10 +27,32 @@ const returnHttpResponse = ({
   payload
 }) => res.status(status).json(payload);
 
+const setInRedisAndReturnResponse = ({
+  path,
+  res,
+  status,
+  payload,
+  client,
+}) => {
+  redis.set({
+    path,
+    data: payload,
+    status,
+    client,
+  })
+  returnHttpResponse({
+    res,
+    status,
+    payload,
+  });
+
+}
+
 
 const getPokemonFromAPI = ({
   path,
   res,
+  client,
 }) => {
   return axiosInstance.get(path)
   .then(resp => {
@@ -39,10 +64,12 @@ const getPokemonFromAPI = ({
       data,
     };
 
-    returnHttpResponse({
+    return setInRedisAndReturnResponse({
+      path,
       res,
       status,
       payload,
+      client,
     });
   })
   .catch(err => {
@@ -59,19 +86,54 @@ const getPokemonFromAPI = ({
       }
     };
 
-    returnHttpResponse({
+    return setInRedisAndReturnResponse({
+      path,
       res,
       status,
       payload,
+      client,
     });
   });
 }
 
+const getPokemon = ({
+  path,
+  res,
+  client,
+}) => {
+  try {
+    redis.get({
+      path,
+      client,
+    }).then(value => {
+      value ?
+        returnHttpResponse({
+          res,
+          status: value.status,
+          payload: value.data,
+        })
+      :
+        getPokemonFromAPI({
+          path,
+          res,
+          client,
+        })
+    });
+  } catch (err) {
+    getPokemon({
+      path,
+      res,
+      client: redis.client,
+    });
+  }
+}
+
 app.get('/pokemon/:name', (req, res) => {
   const path = req.path;
-  getPokemonFromAPI({
+  getPokemon({
     path,
     res,
+    client: redis.client,
   });
 })
 

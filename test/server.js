@@ -24,7 +24,7 @@ describe('Server', () => {
           done();
         });
     });
-
+  
     it('should error when requesting a non existing pokemon', (done) => {
       const pokemonName = 'notAPokemon';
       chai.request(app)
