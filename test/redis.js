@@ -34,6 +34,14 @@ describe('Redis', () => {
         }).finally(done);
       });
 
+      it('Should reject promise resolved as true when pokemon not stored in cache', (done) => {
+        const promise = requestedPokemon.then(result => {
+          result.should.equal(true);
+        }).finally(done);
+  
+        promise.should.be.rejectedWith(Error);
+      });
+
     });
   });
 });
