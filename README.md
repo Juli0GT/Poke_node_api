@@ -29,7 +29,7 @@ What we expect:
   
 ## To Run the test suite
 
-  - Run ``npm run test```
+  - Run ```npm run test```
   
   
   
