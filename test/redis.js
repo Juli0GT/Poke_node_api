@@ -43,5 +43,50 @@ describe('Redis', () => {
       });
 
     });
+
+    describe('Pokemon is stored', () => {
+      let data;
+
+      before(done => {
+        const path = '/pokemon/pikachu';
+        const status = 200;
+        data = {
+          success: true,
+          data: {
+            abilities: ['ability1', 'ability2'],
+          },
+        };
+
+        redisFunctions.set({
+          path,
+          client,
+          status,
+          data,
+        });
+
+        requestedPokemon = redisFunctions.get({
+          path,
+          client,
+        });
+        done();
+      })
+
+      after(done => {
+        client.flushall();
+        done();
+      })
+
+      it('Should return stored value when pokemon data is stored in cache', (done) => {
+        const response = {
+          data,
+          status: 200,
+        };
+  
+        requestedPokemon.then(result => {
+          result.should.eql(response);
+        }).finally(done);
+      });
+
+    });
   });
 });
