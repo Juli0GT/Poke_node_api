@@ -19,7 +19,7 @@ What we expect:
 ## To Run the System
 
   - Install redis globally in your local machine: https://redis.io/topics/quickstart.
-  - In './redis.conf' line 259 change path to your local path to the current repository, example:
+  - In ```./redis.conf line 259``` change path to your local path to the current repository, example:
     ```dir "/Users/juliogt/projects/Training/JS_Training/Poke_node_api"``` 
   - Run ```npm install```
   - Run ```npm run redis```
