@@ -25,6 +25,21 @@ describe('Server', () => {
         });
     });
 
+    it('should error when requesting a non existing pokemon', (done) => {
+      const pokemonName = 'notAPokemon';
+      chai.request(app)
+        .get(`/pokemon/${pokemonName}`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('success');
+          res.body.success.should.equal(false);
+          res.body.should.have.property('error');
+          res.body.error.should.have.property('message');
+          done();
+        });
+    });
+
   });
 
 });
