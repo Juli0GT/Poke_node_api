@@ -1,0 +1,26 @@
+{
+  "name": "poke_node_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "redis": "^2.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juli0GT/Poke_node_api.git"
+  },
+  "author": "Julio Gonzalez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juli0GT/Poke_node_api/issues"
+  },
+  "homepage": "https://github.com/Juli0GT/Poke_node_api#readme"
+}
