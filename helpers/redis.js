@@ -33,9 +33,29 @@ const get = ({
   }
 });
 
+const set = ({
+  path,
+  data,
+  status,
+  client,
+}) => {
+  const value = {
+    data,
+    status,
+  };
+
+  const valueTostore = JSON.stringify(value);
+
+  client.set(path, valueTostore, (err, reply) => {
+    if (err) console.log(err);
+    console.log('REPLY', reply);
+  })
+}
+
 
 module.exports = {
   get,
+  set,
   client,
 };
 
